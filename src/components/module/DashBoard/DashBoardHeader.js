@@ -2,6 +2,7 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useAuth } from "../../../context/auth-context";
 import { Button } from "../../Button";
 const DashboardHeaderStyles = styled.div`
  
@@ -49,6 +50,61 @@ const DashboardHeaderStyles = styled.div`
       line-height: 27px;
     }
   }
+  /* Smartphones (portrait and landscape) ----------- */
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 736px) 
+  and (-webkit-min-device-pixel-ratio: 2) {
+/* Styles */
+}
+
+/* Smartphones (landscape) ----------- */
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 736px) 
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: landscape) {
+/* Styles */
+}
+
+/* Smartphones (portrait) ----------- */
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 736px) 
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: portrait) {
+/* Styles */
+}
+
+/* iPads (portrait and landscape) ----------- */
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) {
+/* Styles */
+}
+
+/* iPads (landscape) ----------- */
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+and (orientation : landscape) {
+/* Styles */
+
+}
+
+/* iPads (portrait) ----------- */
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+and (orientation : portrait) {
+/* Styles */
+}
+
+/* Desktops and laptops ----------- */
+@media only screen 
+and (min-width : 1224px) {
+/* Styles */
+}
 `;
 const headerTab = [
   {
@@ -67,18 +123,25 @@ const headerTab = [
 
 const DashBoardHeader = () => {
   const navigate = useNavigate();
+  const {userInfo }= useAuth();
+  const dashboard = userInfo ? "dashboard" : "*";
+  
   return (
     <DashboardHeaderStyles>
      <div className="header">
-        <a href="/" className="header-logo">
+        <a href="/home" className="header-logo">
           <img src="https://palap.vn/wp-content/uploads/2021/08/logo-dark.png" alt="monkey-blog" />
         </a>
         <ul className="header-list">
-          {headerTab.map((item) => (
-            <NavLink to={`/${item.title}`} className="header-item" key={item.id}>
-              {item.title}
+        <NavLink to={`/home`} className="header-item" >
+              Home
             </NavLink>
-          ))}
+            <NavLink to={`/${dashboard}`} className="header-item" >
+              DashBoard
+            </NavLink>
+            <NavLink to={`/contact`} className="header-item" >
+              Contact
+            </NavLink>
         </ul>
         </div>
       <div className="flex gap-5 ml-auto">

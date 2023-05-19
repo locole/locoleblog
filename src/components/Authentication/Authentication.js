@@ -35,10 +35,11 @@ const Authentication = () => {
   return (
     <AuthenticationStyles>
       <div className="auth">
-        <div className="auth-img">
-          <img srcSet="/monkey.png 2x" alt="monkey-blog" />
-        </div>
-        <h2 className="auth-title"> Monkey Blogging</h2>
+        <a href="/home"  className="w-[260px] h-[140px]">
+          <img src="https://palap.vn/wp-content/uploads/2021/08/logo-dark.png" className="w-full h-full" alt="monkey-blog" />
+        </a>
+        <h2 className="auth-title">Palap Blog</h2>
+        
       </div>
     </AuthenticationStyles>
   );

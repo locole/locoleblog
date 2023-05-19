@@ -69,7 +69,7 @@ const SignInPage = () => {
         const user = userCredential.user;
         toast.success("Sign In success !!!");
         setTimeout(() => {
-          navigate("/");
+          navigate("/home");
         }, 2000);
         console.log(user);
       })

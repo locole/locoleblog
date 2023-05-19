@@ -17,6 +17,7 @@ import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Authentication } from "../Authentication";
 import { useAuth } from "../../context/auth-context";
+import { async } from "@firebase/util";
 
 const flexCenter = `
 display: flex;
@@ -58,25 +59,29 @@ const SignUpPage = () => {
     mode: "onChange",
     resolver: yupResolver(schema),
   });
-  const { userInfo } = useAuth();
+  
   const navigate = useNavigate();
   const [togglePassword, setTooglePassword] = useState(true);
+  
   const handleSignUp = async (values) => {
-    console.log(values);
-    console.log(isValid);
+    
     if (!isValid) return;
-    createUserWithEmailAndPassword(auth, values.email, values.password);
-    if (userInfo) {
-      console.log("Create successfully");
-      console.log(userInfo.uid);
-      values = { ...values, uid: userInfo.uid };
-    }
-    const colRef = collection(db, "users");
-    await addDoc(colRef, {
+    createUserWithEmailAndPassword(auth, values.email, values.password)
+    .then(async (userCredential) => {
+      // Signed in 
+      const user = userCredential.user;
+    
+      const colRef = collection(db, "users");
+      values = {
+        ...values, 
+        uid: user.uid
+      }
+     await addDoc(colRef, {
       fullname: values.fullname,
       email: values.email,
       password: values.password,
-      userUID: values.uid,
+      userUID: user.uid,
+      imageName:""
     });
     toast.success("Register sucessfully !!!");
     const q = query(colRef, where("userUID", "==", values.uid));
@@ -87,6 +92,19 @@ const SignUpPage = () => {
      navigate(`/update-user?id=${doc.id}`);
      
     });
+      
+      // ...
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      toast.error("Register failed !!!")
+      // ..
+    });
+    
+    
+    
+    
   };
 
   useEffect(() => {
@@ -154,7 +172,8 @@ const SignUpPage = () => {
         <NavLink to="/sign-in" className="navigation">
           Did you have account? Sign in!!!
         </NavLink>
-        <Button type="submit">Sign Up</Button>
+        <Button type="submit" isSubmitting={isSubmitting}
+         >Sign Up</Button>
       </form>
     </SignUpPageStyles>
   );

@@ -25,8 +25,8 @@ const DashBoardCreateCategory = () => {
             authorUID: ""
         }
     });
-    const userInfo = useAuth();
-    
+    const {userInfo} = useAuth();
+   
     const navigate = useNavigate();
     const watchStatus = watch("status");
     const handleCreateCategory = async (value) => {
@@ -90,9 +90,7 @@ const DashBoardCreateCategory = () => {
               </Radio>
                 </Field>
             </div>
-            <div className='flex items-center justify-center w-full my-5 '><Button type="submit" onclick={() => {
-              navigate("/category")
-            }}>Add new category</Button></div>
+            <div className='flex items-center justify-center w-full my-5 '><Button type="submit" >Add new category</Button></div>
            </form>
         </div>
     );

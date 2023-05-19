@@ -1,5 +1,7 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { date } from "yup";
 import PostCategory from "./PostCategory";
 import PostImage from "./PostImage";
 import PostMeta from "./PostMeta";
@@ -42,9 +44,14 @@ const PostFeatureItemStyles = styled.div`
   }
 `;
 const PostFeatureItem = ({data}) => {
-  
+  const navigate = useNavigate();
+  const date = new Date(data?.createdAt?.seconds*1000);
+  const formDate = new Date(date).toLocaleDateString("vi-VI");
+  // console.log(formDate);
   return (
-    <PostFeatureItemStyles>
+    <PostFeatureItemStyles onClick={() => {
+      navigate(`/${data.slug}`)
+    }}>
       <PostImage
         url={data.picture}
         alt="unsplash"
@@ -53,7 +60,7 @@ const PostFeatureItem = ({data}) => {
       <div className="post-content">
         <div className="post-top">
           <PostCategory backgroundColor="white" color="#6B6B6B">{data.categoriesName}</PostCategory>
-          <PostMeta authorName={data.author} color="white"></PostMeta>
+          <PostMeta authorName={data.author} date={formDate} color="white"></PostMeta>
         </div>
         <PostTitle color="white" size="big">
           {data.title}

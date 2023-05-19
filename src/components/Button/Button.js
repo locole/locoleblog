@@ -1,6 +1,7 @@
 import { getAuth, signOut } from "firebase/auth";
 import React from "react";
 import styled from "styled-components";
+import { LoadingSpinner } from "../Loading";
 
 const ButtonStyles = styled.button`
   min-width: 200px;
@@ -16,10 +17,12 @@ const ButtonStyles = styled.button`
   cursor: pointer;
   padding: 10px 20px;
 `;
-const Button = ({ children, type, onclick = () => {} }) => {
+const Button = ({ children, type, onclick = () => {}, ...props }) => {
+  const { isLoading } = props;
+  const child = !!isLoading ? <LoadingSpinner></LoadingSpinner> : children;
   return (
-    <ButtonStyles type={type} onClick={onclick}>
-      {children}
+    <ButtonStyles type={type} onClick={onclick} >
+      {child}
     </ButtonStyles>
   );
 };

@@ -1,6 +1,7 @@
 
 import { collection, limit, onSnapshot, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { db } from "../../../FireBase/FireBase-config";
 import Heading from "../../Layout/Heading";
@@ -13,6 +14,64 @@ const HomeFeatureStyles = styled.div`
     gap: 40px;
 }
 margin-bottom: 50px;
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 736px) 
+  and (-webkit-min-device-pixel-ratio: 2) {
+/* Styles */
+.feature-item{
+  display: flex;
+  flex-direction: column;
+}
+}
+
+/* Smartphones (landscape) ----------- */
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 736px) 
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: landscape) {
+/* Styles */
+}
+
+/* Smartphones (portrait) ----------- */
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 736px) 
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: portrait) {
+/* Styles */
+}
+
+/* iPads (portrait and landscape) ----------- */
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) {
+/* Styles */
+}
+
+/* iPads (landscape) ----------- */
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+and (orientation : landscape) {
+/* Styles */
+}
+
+/* iPads (portrait) ----------- */
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+and (orientation : portrait) {
+/* Styles */
+}
+
+/* Desktops and laptops ----------- */
+@media only screen 
+and (min-width : 1224px) {
+/* Styles */
+}
 
 `;
 
@@ -37,12 +96,13 @@ const HomeFeature = () => {
     });
   }, []);
   if (posts.length <= 0) return null;
-  console.log(posts);
+
+ 
   return (
     <HomeFeatureStyles className="home-block">
      <div className="container">
         <Heading>Featured posts</Heading>
-        <div className="grid-layout">
+        <div className="grid-layout feature-item">
           {posts.map((post) => (
             <PostFeatureItem key={post.id} data={post}></PostFeatureItem>
           ))}

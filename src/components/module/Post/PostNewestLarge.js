@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import PostCategory from "./PostCategory";
 import PostImage from "./PostImage";
@@ -26,19 +27,24 @@ const PostNewestLargeStyles = styled.div`
   }
 `;
 
-const PostNewestLarge = () => {
+const PostNewestLarge = ({data}) => {
+  const navigate = useNavigate();
+  const date = new Date(data?.createdAt?.seconds*1000);
+  const formDate = new Date(date).toLocaleDateString("vi-VI");
   return (
-    <PostNewestLargeStyles>
+    <PostNewestLargeStyles onClick={() => {
+      navigate(`/${data.slug}`)
+    }}>
       <PostImage
-        url="https://images.unsplash.com/photo-1510519138101-570d1dca3d66?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2294&q=80"
+        url={data.picture}
         alt=""
       ></PostImage>
 
-      <PostCategory backgroundColor="#F3EDFF" color="#6B6B6B">Kiến thức</PostCategory>
+      <PostCategory backgroundColor="#F3EDFF" color="#6B6B6B">{data.categoriesName}</PostCategory>
       <PostTitle color="black" size="big">
-        Hướng dẫn setup phòng cực chill dành cho người mới toàn tập
+        {data.title}
       </PostTitle>
-      <PostMeta color="#6B6B6B"></PostMeta>
+      <PostMeta authorName={data.author} date={formDate} color="#6B6B6B"></PostMeta>
     </PostNewestLargeStyles>
   );
 };

@@ -28,10 +28,7 @@ const UserTable = () => {
   }, []);
   const { userInfo } = useAuth();
   const handleDeleteUser = async (user) => {
-    if (userInfo?.role !== userRole.ADMIN) {
-      Swal.fire("Failed", "You have no right to do this action", "warning");
-      return;
-    }
+   
     const colRef = doc(db, "users", user.id);
     Swal.fire({
       title: "Are you sure?",
@@ -104,7 +101,7 @@ const UserTable = () => {
             <td>
               <div className="flex items-center text-gray-500 gap-x-3">
                 <ActionEdit
-                  onClick={() => navigate(`/manage/update-user?id=${user.id}`)}
+                  onClick={() => navigate(`/update-user?id=${user.id}`)}
                 ></ActionEdit>
                 <ActionDelete onClick={() => handleDeleteUser(user)}></ActionDelete>
               </div>

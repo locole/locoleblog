@@ -18,16 +18,21 @@ import UserManage from './components/module/User/UserManage';
 import UserProfile from './components/module/User/UserProfile';
 import UserUpdate from './components/module/User/UserUpdate';
 import Contact from './components/Contact/Contact';
+import ErrorPage from './components/Page/ErrorPage';
+import { Suspense } from 'react';
 
 function App() {
   return (
     <div>
       <AuthProvider>
+        <Suspense>
         <Routes>
+        <Route path='/' element={<HomePage></HomePage>}></Route>
           <Route path='/home' element={<HomePage></HomePage>}></Route>
           <Route path='/contact' element={<Contact></Contact>}></Route>
           <Route path='/sign-up' element={<SignUpPage></SignUpPage>}></Route>
           <Route path='/sign-in' element={<SignInPage></SignInPage>}></Route>
+          <Route path='*' element={<ErrorPage></ErrorPage>}></Route>
           <Route
             path="/:slug"
             element={<PostDetailsPage></PostDetailsPage>}
@@ -64,8 +69,9 @@ function App() {
               ></Route>
              {/* users */}
           </Route>
-           
+         
         </Routes>
+        </Suspense>
       </AuthProvider>
     </div>
   );

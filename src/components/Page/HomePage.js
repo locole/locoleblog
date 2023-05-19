@@ -8,16 +8,81 @@ import HomeBanner from '../module/Home/HomeBanner';
 import HomeFeature from '../module/Home/HomeFeature';
 import HomeNewest from '../module/Home/HomeNewest';
 const HomePageStyles= styled.div`
-width: 1200px;
+max-width: 1200px;
 margin: 0 auto;
+padding: 20px;
+/* Smartphones (portrait and landscape) ----------- */
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 736px) 
+  and (-webkit-min-device-pixel-ratio: 2) {
+/* Styles */
+}
+
+/* Smartphones (landscape) ----------- */
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 736px) 
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: landscape) {
+/* Styles */
+   
+}
+
+/* Smartphones (portrait) ----------- */
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 736px) 
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: portrait) {
+/* Styles */
+}
+
+/* iPads (portrait and landscape) ----------- */
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) {
+/* Styles */
+}
+
+/* iPads (landscape) ----------- */
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+and (orientation : landscape) {
+/* Styles */
+}
+
+/* iPads (portrait) ----------- */
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+and (orientation : portrait) {
+/* Styles */
+.banner-image{
+    display: none;
+}
+.jRGaRx{
+    height: 500px;
+}
+}
+
+/* Desktops and laptops ----------- */
+@media only screen 
+and (min-width : 1224px) {
+/* Styles */
+}
 `;
 const HomePage = () => {
+    const {userInfo} = useAuth();
     useEffect(() => {
         document.title ="Home Page";
-    })
-    const {userInfo} = useAuth();
+        console.log(userInfo);
+    }, [userInfo])
+  
     return (
-        <HomePageStyles>
+        <HomePageStyles className='homepage'>
            <Layout userInfo={userInfo}>
             <HomeBanner></HomeBanner>
             <HomeFeature></HomeFeature>

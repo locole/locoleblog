@@ -1,5 +1,5 @@
 
-import { collection, onSnapshot, query, where } from "firebase/firestore";
+import { collection, limit, onSnapshot, query, where } from "firebase/firestore";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -11,9 +11,11 @@ import PostCategory from "../module/Post/PostCategory";
 import PostImage from "../module/Post/PostImage";
 import PostItem from "../module/Post/PostItem";
 import PostMeta from "../module/Post/PostMeta";
+import ErrorPage from "./ErrorPage";
 const PostDetailsPageStyles = styled.div`
-width: 1200px;
+max-width: 1200px;
 margin: 0 auto;
+padding: 0 20px;
   padding-bottom: 100px;
 
   .post {
@@ -111,10 +113,13 @@ const PostDetailsPage = () => {
   const {slug} = useParams();
   const [postInfo, setPostInfo] = useState({})
   const [author , setAuthor ] = useState({});
+
+  const [status, setStatus] = useState(true);
    useEffect(() => {
     async function fetchData() {
       if (!slug) return;
       const colRef = query(collection(db, "posts"), where("slug", "==", slug));
+     
       onSnapshot(colRef, (snapshot) => {
         snapshot.forEach((doc) => {
           doc.data() &&
@@ -128,6 +133,11 @@ const PostDetailsPage = () => {
     }
     fetchData();
    }, [ slug]);
+   
+   useEffect(() => {
+    document.body.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [slug]);
+   console.log(status)
    useEffect(() => {
     async function fetchAuthorData() {
        if(!postInfo.authorUID) return
@@ -145,7 +155,31 @@ const PostDetailsPage = () => {
     }
     fetchAuthorData();
    },[postInfo.authorUID]);
-   console.log(author);
+   const [posts, setPosts] = useState([]);
+  useEffect(() => {
+    const colRef = collection(db, "posts");
+    const queries = query(
+      colRef,
+      where("hot", "==", true),
+      limit(4)
+    );
+    onSnapshot(queries, (snapshot) => {
+      const results = [];
+      snapshot.forEach((doc) => {
+        results.push({
+          id: doc.id,
+          ...doc.data(),
+        });
+      });
+      setPosts(results);
+    });
+  }, []);
+  useEffect(() => {
+    document.title=postInfo.title;
+  })
+  if (posts.length <= 0) return null;
+  if (!postInfo.authorUID) return <ErrorPage></ErrorPage>;
+  
   return (
     <PostDetailsPageStyles>
       <Layout>
@@ -184,15 +218,18 @@ const PostDetailsPage = () => {
               </div>
             </div>
           </div>
-          <div className="post-related">
+          {/* <div className="post-related">
             <Heading>Bài viết liên quan</Heading>
-            <div className="grid-layout grid-layout--primary">
-              <PostItem CategoryColor="#6B6B6B"></PostItem>
-              <PostItem CategoryColor="#6B6B6B"></PostItem>
-              <PostItem CategoryColor="#6B6B6B"></PostItem>
-              <PostItem CategoryColor="#6B6B6B"></PostItem>
+            <div className="grid grid-cols-4 gap-7">
+              {
+                posts.length > 0 && posts.map((item) => (
+              <PostItem CategoryColor="white" data={item} key={item.id}>
+                
+              </PostItem>
+            ))
+              }
             </div>
-          </div>
+          </div> */}
         </div>
       </Layout>
     </PostDetailsPageStyles>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Layout from "../Layout/Layout";
 const ContactStyles = styled.div`
@@ -6,6 +6,9 @@ const ContactStyles = styled.div`
   margin: 0 auto;
 `;
 const Contact = () => {
+  useEffect(() => {
+    document.title="Contact Page";
+  })
   return (
     <ContactStyles>
       <Layout>

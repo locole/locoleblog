@@ -21,7 +21,7 @@ import { postStatus } from "../../Contants";
 import Toogle from "../Toogle/Toogle";
 import Option from "../Dropdown/Option";
 import { Dropdown } from "../Dropdown";
-import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs, serverTimestamp } from "firebase/firestore";
 import { db } from "../../FireBase/FireBase-config";
 import { async } from "@firebase/util";
 import PostItem from "../module/Post/PostItem";
@@ -94,7 +94,7 @@ const DashBoardPostPage = () => {
   // console.log(categories);
   const watchStatus = watch("status");
   const {userInfo } = useAuth();
-  
+  console.log(userInfo)
   useEffect(() => {
     document.title = "MUVN Blog DashBoard";
     const getData = async () => {
@@ -108,6 +108,7 @@ const DashBoardPostPage = () => {
         })
       });
       setCategories(result);
+     
      })
     }
     getData();
@@ -166,7 +167,8 @@ const DashBoardPostPage = () => {
    const colRef = collection(db, "posts");
    
    await addDoc(colRef, {...values,
-  authorUID: userInfo.uid}).then(() => {
+  authorUID: userInfo.uid,
+  createdAt: serverTimestamp()}).then(() => {
     toast.success("Create post successfully!!!");
     navigate(`/${values.slug}`);
    })

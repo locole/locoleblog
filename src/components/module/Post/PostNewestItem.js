@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import PostCategory from "./PostCategory";
 import PostImage from "./PostImage";
@@ -45,21 +46,26 @@ const PostNewestItemStyles = styled.div`
     }
   }
 `;
-const PostNewestItem = () => {
+const PostNewestItem = ({data}) => {
+  const navigate = useNavigate();
+  const date = new Date(data?.createdAt?.seconds*1000);
+  const formDate = new Date(date).toLocaleDateString("vi-VI");
   return (
-    <PostNewestItemStyles>
+    <PostNewestItemStyles onClick={() => {
+      navigate(`/${data.slug}`)
+    }}>
       <PostImage
-        url="https://images.unsplash.com/photo-1510519138101-570d1dca3d66?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2294&q=80"
+        url={data.picture}
         alt=""
         to="/"
       ></PostImage>
 
       <div className="post-content">
-        <PostCategory backgroundColor="white" color="#9D9D9D" type="secondary">Kiến thức</PostCategory>
+        <PostCategory backgroundColor="white" color="#9D9D9D" type="secondary">{data.categoriesName}</PostCategory>
         <PostTitle color="black">
-          Hướng dẫn setup phòng cực chill dành cho người mới toàn tập
+          {data.title}
         </PostTitle>
-        <PostMeta color="#6B6B6B"></PostMeta>
+        <PostMeta authorName={data.author} date={formDate} color="#6B6B6B"></PostMeta>
       </div>
     </PostNewestItemStyles>
   );

@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {useForm} from "react-hook-form";
 import { useAuth } from "../../../context/auth-context";
 import { userRole, userStatus } from "../../../Contants";
@@ -36,10 +36,13 @@ const UserUpdate = () => {
   const watchStatus = watch("status");
   const watchRole = watch("role");
   const imageUrl = getValues("avatar");
-
+  
 const [image, setImage] = useState("");
+
+
 const handleUploadImage = (file) => {
     const storageRef = ref(storage, "images/" + file.name);
+    
     // create a reference to 'images' + file.name
     const uploadTask = uploadBytesResumable(storageRef, file); // tien hanh upload
     uploadTask.on(
@@ -66,8 +69,9 @@ const handleUploadImage = (file) => {
     handleUploadImage(file);
   };
   const handleDeleteImage = () => {
-    // const image_name = getValues("picture").name;
-    const image_name = "MacBookPro-14-Silver-B.jpeg";
+    const image_name = getValues("imageName");
+    
+    
     const imageRef = ref(storage, "images/" + image_name);
     deleteObject(imageRef)
       .then(() => {
@@ -79,7 +83,7 @@ const handleUploadImage = (file) => {
       });
   };
 
-
+  const navigate = useNavigate();
   const handleUpdateUser = async (values) => {
     console.log(values)
     if (!isValid) return;
@@ -89,8 +93,10 @@ const handleUploadImage = (file) => {
       await updateDoc(colRef, {
         ...values,
         avatar: image,
+       
       });
       toast.success("Update user information successfully!");
+      navigate("/users");
     } catch (error) {
       console.log(error);
       toast.error("Update user failed!");

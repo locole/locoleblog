@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, getDoc, getDocs, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { deleteObject, getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -64,7 +64,7 @@ const PostUpdate = () => {
     const navigate = useNavigate();
     const [image, setImage] = useState("");
     const [toogle, setToogle] = useState(false);
-    const { control, handleSubmit, setValue, getValues, watch, reset } = useForm({
+    const { control, handleSubmit, setValue, getValues, watch, reset , formState:{isSubmitting, isValid, errors}} = useForm({
       mode: "onchange",
       defaultValues: {
         title: "",
@@ -165,7 +165,8 @@ const PostUpdate = () => {
         
         await updateDoc(colRef , {
           ...values,
-          authorUID: userInfo.uid
+          authorUID: userInfo.uid,
+          createdAt: serverTimestamp(),
         });
         toast.success("Update category successfully !!!");
         navigate(`/${values.slug}`);
@@ -294,7 +295,7 @@ const PostUpdate = () => {
                 onChange={handleChangeContent}
               />
        </div>
-        <Button>Update post</Button>
+        <Button isSubmitting={isSubmitting}>Update post</Button>
       </form>
         </div>
     );
