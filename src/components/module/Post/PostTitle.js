@@ -1,0 +1,40 @@
+import React from "react";
+import { NavLink } from "react-router-dom";
+import styled, { css } from "styled-components";
+const PostTitleStyles = styled.h3`
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.25px;
+ 
+  a {
+    display: block;
+    text-decoration: none;
+    color: ${props => props.color};;
+  }
+  ${(props) =>
+    props.size === "normal" &&
+    css`
+      font-size: 18px;
+      @media screen and (max-width: 1023.98px) {
+        font-size: 14px;
+      }
+    `};
+  ${(props) =>
+    props.size === "big" &&
+    css`
+      font-size: 22px;
+      @media screen and (max-width: 1023.98px) {
+        font-size: 16px;
+      }
+    `};
+`;
+
+const PostTitle = ({ children,color, className = "", size = "normal", to = "/" }) => {
+  return (
+    <PostTitleStyles color={color} size={size} className={`post-title ${className}`}>
+      <NavLink to={to}>{children}</NavLink>
+    </PostTitleStyles>
+  );
+};
+
+export default PostTitle;
